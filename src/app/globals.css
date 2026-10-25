@@ -1,0 +1,340 @@
+@import "tailwindcss";
+
+/*
+ * Inqbex design tokens.
+ * Source of truth: Website Strategy Brief, "Foundations" table + palette sheet.
+ * UI is purple-led. Green exists only inside the logo (see --color-logo-*).
+ */
+
+@theme {
+  /* ---------- Colour: surfaces ---------- */
+  --color-base: #13101a; /* page background */
+  --color-surface: #1a1522; /* alternate section ground, card fills */
+  --color-elevated: #2a212e; /* raised panels, only where separation is needed */
+  --color-void: #000000; /* deepest black, UI lines */
+
+  /* ---------- Colour: text ---------- */
+  --color-ink: #e7e0d6; /* primary copy (14.4:1 on base) */
+  --color-ink-strong: #faf9f6; /* extra contrast only */
+  --color-ink-soft: #cfc7bc; /* nav links */
+  --color-ink-muted: #aba196; /* body copy on dark: muted warm grey (Draft 2) */
+  --color-ink-faint: #8e857b; /* metadata, captions, scroll cue */
+
+  /* ---------- Colour: primary (purple) ---------- */
+  --color-primary: #261732; /* anchor: tinted sections, hover fills */
+  --color-primary-muted: #4b4260; /* quieter UI states, borders on hover */
+  --color-primary-intense: #9d4edd; /* accent: CTA fill, key strokes. Not body text on dark */
+  --color-primary-soft: #c9a3f2; /* purple text, links, focus rings on dark */
+  --color-primary-pale: #e2cff7; /* link hover, particle highlights */
+  --color-primary-label: #b9a6cf; /* eyebrows */
+
+  /* ---------- Colour: secondary (red) ---------- */
+  --color-accent: #4c0000; /* badges, key markers, critical states. Not a CTA colour */
+  --color-accent-muted: #7a2626;
+  --color-accent-intense: #990000;
+  --color-accent-soft: #e07a7a; /* derived: error text on dark (6.5:1) */
+
+  /* ---------- Colour: light surfaces (rare, e.g. inverted sections) ---------- */
+  --color-light: #d4cbc4;
+  --color-light-muted: #f1efe0;
+
+  /* ---------- Colour: lines ---------- */
+  --color-line: rgb(231 224 214 / 0.1); /* low-contrast divider */
+  --color-line-strong: rgb(231 224 214 / 0.2);
+
+  /* ---------- Colour: BAZ (Inqbex × BAZ page only, from thebaz.in) ---------- */
+  --color-paper: #f3f2f2;
+  --color-baz-ink: #131110;
+  --color-baz-red: #ec3013; /* shapes and large type */
+  --color-baz-red-ink: #c4260e; /* small red text on paper (5.2:1) */
+  --color-baz-red-light: #f2512f; /* small red text on dark (5.1:1) */
+  --color-baz-red-deep: #cc2810; /* red surfaces behind small paper text (4.8:1) */
+  --color-baz-blue: #1b34ff;
+  --color-baz-yellow: #ffc22e;
+  --color-baz-green: #0f9d58;
+  --color-baz-muted: #4a4545;
+
+  /* ---------- Colour: logo only. Do not use in UI ---------- */
+  --color-logo-green-from: #00d26a;
+  --color-logo-green-to: #a6ff00;
+
+  /* ---------- Type ---------- */
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-baz: var(--font-archivo), "Arial Black", sans-serif;
+
+  /* Fluid type scale from the approved designs: [size, line-height, letter-spacing] */
+  --text-display: clamp(2.75rem, 6.2vw, 5.625rem); /* hero, 44–90px, two lines */
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.025em;
+  --text-h1: clamp(2.375rem, 4.4vw, 4rem); /* closing headlines, 38–64px */
+  --text-h1--line-height: 1.05;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: clamp(2.125rem, 3.6vw, 3.25rem); /* section headlines, 34–52px */
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2-sm: clamp(2rem, 3.4vw, 3rem); /* Services section headlines, 32–48px */
+  --text-h2-sm--line-height: 1.1;
+  --text-h2-sm--letter-spacing: -0.02em;
+  --text-h3: clamp(1.5rem, 1.2rem + 1vw, 2rem); /* card titles, 24–32px */
+  --text-h3--line-height: 1.2;
+  --text-stat: clamp(2.25rem, 4vw, 3.5rem); /* proof figures, 36–56px */
+  --text-stat--line-height: 1;
+  --text-stat--letter-spacing: -0.03em;
+  --text-lead: clamp(1.0625rem, 1.3vw, 1.1875rem); /* 17–19px */
+  --text-lead--line-height: 1.6;
+  --text-body: 1.0625rem; /* 17px, inside the brief's 16–18px band */
+  --text-body--line-height: 1.65;
+  --text-small: 0.9375rem;
+  --text-small--line-height: 1.55;
+  --text-label: 0.8125rem; /* 13px eyebrows / metadata */
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.08em;
+
+  /* ---------- Layout ---------- */
+  --container-site: 80rem; /* 1280px content max-width */
+  --container-prose: 68ch; /* 55–75 character reading measure */
+
+  /* ---------- Motion ---------- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-out-quart);
+}
+
+/*
+ * Spacing: Tailwind's default 4px unit is kept so 21st.dev components port cleanly.
+ * Stick to even steps (2, 4, 6, 8 ... = 8px, 16px, 24px, 32px) to stay on the 8px scale.
+ * Section rhythm tokens below cover the large editorial gaps.
+ */
+:root {
+  --gutter: 1.25rem; /* 20px mobile */
+  --section-y: 5rem; /* 80px */
+  color-scheme: dark;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 2rem; /* 32px tablet */
+    --section-y: 6.5rem; /* 104px */
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --gutter: 3.5rem; /* 56px desktop */
+    --section-y: 7.5rem; /* 120px */
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-base);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-base);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--color-ink-strong);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-primary-intense);
+    color: var(--color-ink-strong);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary-soft);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Centred 1280px column with responsive outer gutters */
+  .container-site {
+    width: 100%;
+    max-width: calc(var(--container-site) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* 4 / 6 / 12 column grid from the brief */
+  .grid-site {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 1rem;
+  }
+
+  @media (min-width: 48rem) {
+    .grid-site {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      column-gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .grid-site {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 2rem;
+    }
+  }
+
+  .section-y {
+    padding-block: var(--section-y);
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-primary-label);
+  }
+}
+
+/* Services: beams flowing between performance and content */
+@keyframes beam-flow {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+.beam {
+  stroke-dasharray: 60 180;
+  animation: beam-flow 4.5s linear infinite;
+}
+.beam-back {
+  animation-duration: 5.5s;
+}
+
+/* Services: objective orbit. The ring turns; nodes counter-turn to stay upright */
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes orbit-counter {
+  to {
+    transform: rotate(-360deg); /* centring comes from the separate translate property */
+  }
+}
+.orbit-ring {
+  animation: orbit 70s linear infinite;
+}
+.orbit-node {
+  animation: orbit-counter 70s linear infinite;
+}
+.orbit-paused .orbit-ring,
+.orbit-paused .orbit-node {
+  animation-play-state: paused;
+}
+
+/* Services closing CTA: slow outlined marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 90s linear infinite;
+}
+
+/* Inqbex × BAZ: slow spinning ×, bobbing diamond, marching loop, content tape */
+@keyframes baz-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.baz-spin {
+  animation: baz-spin 40s linear infinite;
+}
+@keyframes baz-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+.baz-bob {
+  animation: baz-bob 6s ease-in-out infinite;
+}
+@keyframes baz-dash {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+.baz-loop {
+  stroke-dasharray: 10 10;
+  animation: baz-dash 8s linear infinite;
+}
+.baz-tape {
+  animation: marquee 30s linear infinite;
+}
+@media (max-width: 63.999rem) {
+  .baz-hero-paper {
+    clip-path: polygon(0 9%, 22% 0, 41% 7%, 63% 1%, 100% 8%, 100% 100%, 0 100%);
+  }
+}
+
+/* Hero scroll cue: a small bead sliding down a hairline */
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+}
+.scroll-cue {
+  animation: scroll-cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Returning visitors (set by the inline intro script before paint) skip the loader */
+html[data-intro="seen"] .intro-loader {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .beam {
+    stroke-dasharray: none;
+    opacity: 0.6;
+  }
+}

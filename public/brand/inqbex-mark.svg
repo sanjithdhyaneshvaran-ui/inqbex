@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1140 160 740 330" role="img" aria-labelledby="inqbex-title">
+<title id="inqbex-title">Inqbex</title>
+<defs>
+  <linearGradient id="inqbex-silver" x1="0" y1="160" x2="0" y2="532" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#FFFFFF"/>
+    <stop offset="1" stop-color="#C9C4CD"/>
+  </linearGradient>
+  <linearGradient id="inqbex-growth" x1="1180" y1="0" x2="1862" y2="0" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#DAD6DE"/>
+    <stop offset="0.16" stop-color="#00D26A"/>
+    <stop offset="1" stop-color="#A6FF00"/>
+  </linearGradient>
+  <mask id="inqbex-knockout" maskUnits="userSpaceOnUse" x="1400" y="140" width="500" height="400">
+    <rect x="1400" y="140" width="500" height="400" fill="#fff"/>
+    <path d="M1177 369.5A83 83 0 0 0 1260 452.5H1470C1530 452.5 1580 451.3 1620 415L1782 268" fill="none" stroke="#000" stroke-width="70"/>
+  </mask>
+</defs>
+
+<g stroke="url(#inqbex-silver)" fill="none" stroke-width="44" stroke-linejoin="round">
+  <path d="M1262 361H1456.5V322A63 63 0 0 0 1393.5 259H1260A83 83 0 0 0 1177 342V369.5"/>
+</g>
+<path d="M1269 339L1247 383L1264 383L1264 339Z" fill="url(#inqbex-silver)"/>
+<path d="M1177 369.5A83 83 0 0 0 1260 452.5H1470C1530 452.5 1580 451.3 1620 415L1782 268" fill="none" stroke="url(#inqbex-growth)" stroke-width="42" stroke-linejoin="round"/>
+<path d="M1862 177L1730 238L1828 297Z" fill="url(#inqbex-growth)" stroke="url(#inqbex-growth)" stroke-width="6" stroke-linejoin="round"/>
+
+</svg>
