@@ -12,6 +12,8 @@ import { parseEnquiry, summaryRows, validateEnquiry, type Enquiry } from "@/lib/
 //   ENQUIRY_TO      inbox that receives enquiries (default studio@inqbex.in)
 //   ENQUIRY_FROM    sender (default Resend's shared onboarding address, which only
 //                   delivers to the Resend account's own email until inqbex.in is verified)
+//   TURNSTILE_SECRET_KEY  Cloudflare Turnstile secret. When set, every enquiry must carry a
+//                   valid bot-check token (the form gets it with NEXT_PUBLIC_TURNSTILE_SITE_KEY).
 
 export const runtime = "nodejs";
 
@@ -59,6 +61,10 @@ export async function POST(req: Request) {
   const errors = validateEnquiry(enquiry);
   if (Object.keys(errors).length) return NextResponse.json({ ok: false, errors }, { status: 422 });
 
+  if (!(await passedBotCheck(body.turnstileToken, ip))) {
+    return NextResponse.json({ ok: false, error: "Spam check failed. Please try again." }, { status: 403 });
+  }
+
   const key = process.env.RESEND_API_KEY;
   if (!key) {
     if (process.env.NODE_ENV === "production") {
@@ -87,6 +93,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "unavailable" }, { status: 502 });
   }
   return NextResponse.json({ ok: true });
+}
+
+// Asks Cloudflare whether the Turnstile token is genuine and unused. Skipped until the
+// secret is configured, so the form keeps working before the keys are added.
+async function passedBotCheck(token: unknown, ip: string) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return true;
+  if (typeof token !== "string" || !token || token.length > 2048) return false;
+  try {
+    const form = new URLSearchParams({ secret, response: token });
+    if (ip !== "unknown") form.set("remoteip", ip);
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form });
+    const result = (await res.json()) as { success?: boolean; "error-codes"?: string[] };
+    if (!result.success) console.warn("[enquiry] Turnstile rejected the token", result["error-codes"]);
+    return result.success === true;
+  } catch (err) {
+    console.error("[enquiry] Turnstile verification failed", err);
+    return false;
+  }
 }
 
 async function saveLocally(enquiry: Enquiry) {

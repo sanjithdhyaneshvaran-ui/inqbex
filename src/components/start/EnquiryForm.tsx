@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowIcon, buttonClass } from "@/components/ui/Button";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { Turnstile, turnstileSiteKey } from "@/components/start/Turnstile";
 import { site, whatsappUrl } from "@/content/site";
 import { cn } from "@/lib/cn";
 import {
@@ -28,6 +29,9 @@ export function EnquiryForm() {
   const [tried, setTried] = useState(false);
   const [failed, setFailed] = useState(false);
   const [trap, setTrap] = useState("");
+  // Spam check token from Cloudflare Turnstile; single use, so the widget restarts after a failed send
+  const [botToken, setBotToken] = useState("");
+  const [botCheck, setBotCheck] = useState(0);
   const startedAt = useRef(0);
   const card = useRef<HTMLDivElement>(null);
   const stepHeading = useRef<HTMLHeadingElement>(null);
@@ -75,7 +79,7 @@ export function EnquiryForm() {
       const res = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, startedAt: startedAt.current, company_url: trap }),
+        body: JSON.stringify({ ...data, startedAt: startedAt.current, company_url: trap, turnstileToken: botToken }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
@@ -91,6 +95,8 @@ export function EnquiryForm() {
     } catch {
       setFailed(true);
       setMode("preview");
+      setBotToken("");
+      setBotCheck((n) => n + 1);
     }
   };
 
@@ -102,6 +108,7 @@ export function EnquiryForm() {
     setMode("form");
   };
 
+  const waitingForBotCheck = !!turnstileSiteKey && !botToken && !failed;
   const firstName = data.name.trim().split(/\s+/)[0] || "there";
   const replyBy = data.reach === "WhatsApp" ? "on WhatsApp" : data.reach === "Email" ? "by email" : "through the details you gave";
 
@@ -288,13 +295,14 @@ export function EnquiryForm() {
                   .
                 </p>
               )}
+              <Turnstile key={botCheck} onToken={setBotToken} onError={() => setFailed(true)} />
               <div className="flex flex-wrap justify-between gap-3.5">
                 <button type="button" onClick={() => setMode("form")} disabled={mode === "sending"} className={cn(buttonClass({ variant: "outline", size: "md" }), "h-[54px] px-[26px] disabled:opacity-50")}>
                   Edit my answers
                 </button>
-                <button type="button" onClick={submit} disabled={mode === "sending"} aria-busy={mode === "sending"} className={cn(buttonClass({ size: "lg" }), "h-14 px-[30px] disabled:opacity-70")}>
-                  {mode === "sending" ? "Sending…" : "Submit enquiry"}
-                  {mode !== "sending" && <ArrowIcon />}
+                <button type="button" onClick={submit} disabled={mode === "sending" || waitingForBotCheck} aria-busy={mode === "sending" || waitingForBotCheck} className={cn(buttonClass({ size: "lg" }), "h-14 px-[30px] disabled:opacity-70")}>
+                  {mode === "sending" ? "Sending…" : waitingForBotCheck ? "Checking…" : "Submit enquiry"}
+                  {mode !== "sending" && !waitingForBotCheck && <ArrowIcon />}
                 </button>
               </div>
             </div>
