@@ -34,11 +34,11 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Inqbex Growth Studio",
+    default: "Inqbex Growth Studio | Performance Marketing & Social Media Agency, Chennai & Bengaluru",
     template: "%s · Inqbex Growth Studio",
   },
   description:
-    "Inqbex is an integrated growth studio connecting strategy, web, content and performance marketing around one commercial objective.",
+    "Inqbex is a growth studio in Chennai and Bengaluru. We build websites, run Meta ads and make content around one business goal, with a 4x average ROAS.",
   openGraph: {
     type: "website",
     siteName: "Inqbex Growth Studio",

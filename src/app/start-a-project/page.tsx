@@ -6,9 +6,10 @@ import { OtherRoutes } from "@/components/start/OtherRoutes";
 import { StartIntro } from "@/components/start/StartIntro";
 
 export const metadata: Metadata = {
-  title: "Start a project",
+  title: { absolute: "Start a Project with Inqbex Growth Studio" },
   description:
     "Tell us a little about your business, what you're looking to achieve, and where you need help. We'll take it from there.",
+  alternates: { canonical: "/start-a-project" },
 };
 
 // Start a project: introduction, the single-page enquiry form, and other ways to connect.

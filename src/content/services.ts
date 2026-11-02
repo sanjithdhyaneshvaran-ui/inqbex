@@ -5,7 +5,7 @@ export const services = {
     eyebrow: "Services",
     // Words animate in one by one; the marked word carries the purple tint
     words: ["Built", "to", "work", "*together.*"],
-    body: "Websites, Meta ads and content, planned around one commercial objective. Take them together as an integrated engagement, or start with the one you need now.",
+    body: "Website design, Meta ads and social media content for brands in Chennai, Bengaluru and across the world, planned around one commercial objective. Take them together as an integrated engagement, or start with the one you need now.",
     chips: [
       { label: "Websites & digital infrastructure", href: "#websites" },
       { label: "Performance marketing", href: "#performance" },
@@ -19,7 +19,7 @@ export const services = {
     title: "A site that explains the offer and turns the right visitors into enquiries.",
     body: "We plan the journey first, then design and build the site, store or landing pages around it. Tracking goes in from day one, so the ads and the reporting have something reliable to work from.",
     list: [
-      { name: "Marketing websites", note: "Design and build" },
+      { name: "Website design", note: "Marketing sites, designed and built" },
       { name: "Campaign landing pages", note: "Built for paid traffic" },
       { name: "Shopify storefronts", note: "Ecommerce" },
       { name: "Tracking and analytics", note: "Pixels, events, reporting" },
@@ -42,7 +42,7 @@ export const services = {
     performance: {
       lead: "Inqbex",
       title: "Performance marketing",
-      body: "Meta ads planned, run and measured against the agreed objective.",
+      body: "Meta ads on Facebook and Instagram, planned, run and measured against the agreed objective.",
       list: [
         "Account and campaign structure",
         "Audience and creative testing",
@@ -59,7 +59,7 @@ export const services = {
     content: {
       lead: "Inqbex × BAZ",
       title: "Content & creative",
-      body: "Content strategy and production through BAZ, our content production partner.",
+      body: "Social media content strategy and production through BAZ, our content production partner.",
       list: [
         "Content strategy and calendar",
         "Shoots and editing",

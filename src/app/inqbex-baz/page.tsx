@@ -10,9 +10,10 @@ import { BazWork } from "@/components/baz/BazWork";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Inqbex × BAZ",
+  title: { absolute: "Inqbex × BAZ: Strategy, Ads and Content Production" },
   description:
     "Inqbex and BAZ work as one team on selected engagements: growth strategy and paid distribution from Inqbex, content production and publishing from BAZ, run from a single plan.",
+  alternates: { canonical: "/inqbex-baz" },
 };
 
 export const viewport: Viewport = { themeColor: "#13101a" };

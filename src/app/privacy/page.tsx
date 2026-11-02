@@ -6,6 +6,7 @@ import { site } from "@/content/site";
 export const metadata: Metadata = {
   title: "Privacy policy",
   description: "What Inqbex Growth Studio collects when you get in touch, why, who handles it, and how to have it deleted.",
+  alternates: { canonical: "/privacy" },
 };
 
 const updated = "1 November 2026";
